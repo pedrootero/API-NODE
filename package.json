@@ -1,0 +1,24 @@
+{
+  "name": "api-node",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "tsc -w",
+    "start": "node ./dist/program.js"
+  },
+  "author": "pedrootero",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^6.8.3"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.19.2",
+    "@types/http-status": "^1.1.2",
+    "@types/mongoose": "^5.11.97",
+    "@types/node": "^18.11.18"
+  },
+  "description": ""
+}
