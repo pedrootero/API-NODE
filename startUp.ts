@@ -1,5 +1,5 @@
 import * as express from 'express';
-import Database from './infra/db';
+import Database from './Infra/db';
 import * as bodyParser from 'body-parser';
 import NewsController from './controller/newsController';
 
