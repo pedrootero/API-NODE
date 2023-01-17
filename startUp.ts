@@ -9,13 +9,12 @@ class StartUp {
 	private bodyParser;
 
 	constructor() {
-		console.log('teste');
-
 		this.app = express();
 		this._db = new Database();
 		this._db.createConnection();
 		this.middler();
 		this.routes();
+		console.log('teste 2');
 	}
 
 	middler() {
@@ -24,15 +23,18 @@ class StartUp {
 	}
 
 	routes() {
-		this.app.route('/').get((req, res) => {
-			res.send({ versao: '0.0.1' });
-		});
+		console.log('antes route');
 
+		this.app.route('/').get((req, res) => {
+			res.send({ versao: '1.0.1' });
+		});
+		console.log('antes route');
 		this.app.route('/api/v1/news').get(NewsController.get);
 		this.app.route('/api/v1/news/:id').get(NewsController.getById);
 		this.app.route('/api/v1/news').post(NewsController.create);
 		this.app.route('/api/v1/news/:id').put(NewsController.update);
 		this.app.route('/api/v1/news/:id').delete(NewsController.delete);
+		console.log('depois route');
 	}
 }
 

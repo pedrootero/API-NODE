@@ -6,6 +6,7 @@ class Database {
 	createConnection() {
 		mongoose.set('strictQuery', true);
 		mongoose.connect(this.DB_URL);
+		console.log('teste conex db');
 	}
 }
 

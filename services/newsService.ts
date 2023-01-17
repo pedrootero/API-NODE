@@ -2,7 +2,10 @@ import NewsRepository from '../repository/newsRepository';
 
 class NewsService {
 	get() {
-		return NewsRepository.find({});
+		console.log('teste service 1');
+		const news = NewsRepository.find({});
+		//console.log(news);
+		return news;
 	}
 
 	getById(_id) {
