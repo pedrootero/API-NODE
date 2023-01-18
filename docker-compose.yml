@@ -1,0 +1,15 @@
+version: "3"
+services:
+  api:
+    image: pedrootero/api-node
+    ports:
+      - "80:3050"
+    links:
+      - link-db
+  link-db:
+    image: mongodb:latest
+    ports:
+      - "27017:27017"
+      - "28017:28017"
+    environment:
+      - AUTH=no
