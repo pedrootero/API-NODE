@@ -2,7 +2,7 @@ import * as express from 'express';
 import Database from './Infra/db';
 import * as bodyParser from 'body-parser';
 import NewsController from './controller/newsController';
-
+import * as cors from 'cors';
 class StartUp {
 	public app: express.Application;
 	private _db: Database;
@@ -17,7 +17,15 @@ class StartUp {
 		console.log('teste 2');
 	}
 
+	enableCors() {
+		const options: cors.CorsOptions = {
+			methods: 'GET,OPTIONS,PUT,POST,DELETE',
+			origin: '*',
+		};
+	}
+
 	middler() {
+		this.enableCors();
 		this.app.use(bodyParser.json());
 		this.app.use(bodyParser.urlencoded({ extended: false }));
 	}
