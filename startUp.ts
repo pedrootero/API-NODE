@@ -12,7 +12,7 @@ class StartUp {
 		this.app = express();
 		this._db = new Database();
 		this._db.createConnection();
-		this.middler();
+		this.middler(); //chamando o middler antes das rotas para que ele possa funcionar de fato como middler
 		this.routes();
 		console.log('teste 2');
 	}

@@ -1,13 +1,13 @@
 version: "3"
 services:
   api:
-    image: pedrootero/api-node
+    build: .
     ports:
       - "80:3050"
     links:
       - link-db
   link-db:
-    image: mongodb:latest
+    image: mongo:latest
     ports:
       - "27017:27017"
       - "28017:28017"
