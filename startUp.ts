@@ -4,8 +4,7 @@ import * as bodyParser from 'body-parser';
 import NewsController from './controller/newsController';
 import * as cors from 'cors';
 import Auth from './Infra/auth';
-import auth from './Infra/auth';
-
+import uploads from './Infra/uploads';
 class StartUp {
 	public app: express.Application;
 	private _db: Database;
@@ -37,13 +36,22 @@ class StartUp {
 		this.app.route('/').get((req, res) => {
 			res.send({ versao: '1.0.1' });
 		});
+
+		//rota para upload de arquivo
+		this.app.route('/uploads').post(uploads.single('file'), (req, res) => {
+			try {
+				res.send('arquivo enviado com sucesso');
+			} catch (error) {
+				console.log(error);
+			}
+		});
+
 		this.app.use(Auth.validate);
 		this.app.route('/api/v1/news').get(NewsController.get);
 		this.app.route('/api/v1/news/:id').get(NewsController.getById);
 		this.app.route('/api/v1/news').post(NewsController.create);
 		this.app.route('/api/v1/news/:id').put(NewsController.update);
 		this.app.route('/api/v1/news/:id').delete(NewsController.delete);
-		console.log('depois route');
 	}
 }
 
