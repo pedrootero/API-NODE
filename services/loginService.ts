@@ -2,10 +2,10 @@ import LoginSchema from '../repository/loginRepository';
 
 class LoginService {
 	get() {
-		console.log('teste service 1');
-		const news = LoginSchema.find({});
+		console.log('teste service login');
+		const login = LoginSchema.find({});
 		//console.log(news);
-		return news;
+		return login;
 	}
 
 	getById(_id) {
@@ -25,4 +25,4 @@ class LoginService {
 	}
 }
 
-export default new LoginSchema();
+export default new LoginService();
