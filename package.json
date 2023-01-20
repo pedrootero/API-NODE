@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "tsc -w",
-    "start": "node ./dist/program.js"
+    "start": "node ./dist/program.js",
+    "dev": "npx nodemon --exec ts-node program.ts"
   },
   "author": "pedrootero",
   "license": "ISC",

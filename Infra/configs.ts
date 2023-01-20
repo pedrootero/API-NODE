@@ -1,5 +1,5 @@
 class Configs {
-	secret = 'batman batman batman';
+	secret = String(process.env.SECRET);
 }
 
 export default new Configs();

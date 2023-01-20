@@ -1,3 +1,4 @@
+import loginRepository from '../repository/loginRepository';
 import LoginSchema from '../repository/loginRepository';
 
 class LoginService {
