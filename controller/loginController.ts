@@ -29,3 +29,5 @@ class LoginController {
 			.catch((error) => console.error.bind(console, `Error ${error}`));
 	}
 }
+
+export default new LoginController();

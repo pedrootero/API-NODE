@@ -5,6 +5,7 @@ import NewsController from './controller/newsController';
 import * as cors from 'cors';
 import Auth from './Infra/auth';
 import uploads from './Infra/uploads';
+import LoginController from './controller/loginController';
 class StartUp {
 	public app: express.Application;
 	private _db: Database;
@@ -46,7 +47,12 @@ class StartUp {
 			}
 		});
 
+		this.app.route('/api/v1/login').get(LoginController.get);
+		this.app.route('/api/v1/login').get(LoginController.create);
+		this.app.route('/api/v1/login').get(LoginController.getById);
+
 		this.app.use(Auth.validate);
+
 		this.app.route('/api/v1/news').get(NewsController.get);
 		this.app.route('/api/v1/news/:id').get(NewsController.getById);
 		this.app.route('/api/v1/news').post(NewsController.create);
