@@ -1,6 +1,7 @@
 import LoginService from '../services/loginService';
 import * as HttpStatus from 'http-status';
 import Helper from '../Infra/helper';
+import * as bcrypt from 'bcrypt';
 
 class LoginController {
 	get(req, res) {
@@ -21,13 +22,43 @@ class LoginController {
 			.catch((error) => console.error.bind(console, `Error ${error}`));
 	}
 
-	create(req, res) {
-		let vm = req.body;
-		console.log(vm);
-		LoginService.create(vm)
-			.then((login) => Helper.sendResponse(res, HttpStatus.OK, 'Usuario cadastrado com sucesso!'))
-			.catch((error) => console.error.bind(console, `Error ${error}`));
-	}
-}
+	post(req, res) {
+		//let vm = req.body;
 
+		const {user, passwd} = req.body
+
+		//validations
+		if(!user){
+			return res.status(422).json({msg: "o nome é obrigatório"})
+		}
+		if(!passwd){
+			return res.status(422).json({msg: "a senha é obrigatoria"})
+		}
+
+		//check user exists
+		const userExists = LoginService.getById({user: user})
+
+		/*
+		if(userExists){
+			return res.status(422).json({msg: "Por favor, use outro usuario"})
+		}
+		*/
+		// create passwd 
+		const salt = bcrypt.genSalt(12)
+		const passwordHash = bcrypt.hash(passwd, salt)
+
+
+		//console.log(vm);
+		try{
+		LoginService.post({user, passwd: passwordHash})
+			.then((login) => Helper.sendResponse(res, HttpStatus.OK, 'Usuario cadastrado com sucesso!'))
+		}catch(error) {
+			console.error.bind(console, `Error ${error}`);
+			res.status(500).json({msg: "houve um erro no servidor!"})
+	}
+
+
+
+ }
+}
 export default new LoginController();

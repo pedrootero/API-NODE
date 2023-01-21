@@ -47,9 +47,9 @@ class StartUp {
 			}
 		});
 
-		this.app.route('/login').get(LoginController.get);
-		this.app.route('/login').post(LoginController.create);
-		this.app.route('/login').get(LoginController.getById);
+		this.app.route('/auth/login').get(LoginController.get);
+		this.app.route('/auth/register').post(LoginController.post);
+		this.app.route('/auth/login').get(LoginController.getById);
 
 		this.app.use(Auth.validate);
 

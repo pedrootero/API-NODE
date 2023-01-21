@@ -12,10 +12,11 @@ class LoginService {
 		return LoginSchema.findById({ _id });
 	}
 
-	create(login) {
+	post(login) {
 		return LoginSchema.create(login);
 	}
 
+	
 	update(_id, login) {
 		return LoginSchema.findByIdAndUpdate(_id, login);
 	}
