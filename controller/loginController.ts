@@ -38,11 +38,10 @@ class LoginController {
 		//check user exists
 		const userExists = LoginService.getById({ user: user });
 
-		/*
-		if(userExists){
-			return res.status(422).json({msg: "Por favor, use outro usuario"})
+		if (userExists) {
+			return res.status(422).json({ msg: 'Por favor, use outro usuario' });
 		}
-		*/
+
 		// create passwd
 		const salt: String = await bcrypt.genSalt(12);
 		console.log({ salt });
