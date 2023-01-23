@@ -6,7 +6,7 @@ import loginService from '../services/loginService';
 import Configs from './configs';
 
 class Auth {
-	validate(req, res, next) {
+	async validate(req, res, next) {
 		const { user, passwd } = req.body;
 
 		//validations
@@ -24,7 +24,7 @@ class Auth {
 			return res.status(404).json({ msg: 'Usuario não encontrado' });
 		}
 		//check passwd match
-		const checkpasswd = bcrypt.compare(passwd, loginService.getById(passwd));
+		const checkpasswd = await bcrypt.compare(`${passwd}`, loginService.getById(passwd));
 
 		if (!checkpasswd) {
 			return res.status(401).json({ msg: 'senha inválida!' });
@@ -41,15 +41,16 @@ class Auth {
 			);
 
 			console.log({ tokenuser });
+
 			res.status(200).json({ msg: 'autenticação realizada com sucesso', tokenuser });
 		} catch (error) {
 			console.log(error);
 			res.status(500).json({ msg: 'houve um erro no servidor' });
 		}
 
-		function checktoken(req, res, next) {
+		async function checktoken(req, res, next) {
 			const authHeader = req.headers['authorization'];
-			const token = authHeader && authHeader.split(' ')[1];
+			const token = (await authHeader) && authHeader.split(' ')[1];
 			console.log({ token });
 
 			if (!token) {
