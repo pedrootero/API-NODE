@@ -7,69 +7,62 @@ import Configs from './configs';
 
 class Auth {
 	validate(req, res, next) {
-
-		const {user, passwd} = req.body;
+		const { user, passwd } = req.body;
 
 		//validations
-		if(!user){
-			return res.status(422).json({msg: "o nome é obrigatório"})
+		if (!user) {
+			return res.status(422).json({ msg: 'o nome é obrigatório' });
 		}
-		if(!passwd){
-			return res.status(422).json({msg: "a senha é obrigatoria"})
+		if (!passwd) {
+			return res.status(422).json({ msg: 'a senha é obrigatoria' });
 		}
 
-		
-		//check user exists 	
-		const login = loginService.getById({user: user})
+		//check user exists
+		const login = loginService.getById({ user: user });
 
-		if(!login){
-			return res.status(404).json({msg: "Usuario não encontrado"})
-
+		if (!login) {
+			return res.status(404).json({ msg: 'Usuario não encontrado' });
 		}
 		//check passwd match
-		const checkpasswd = bcrypt.compare(passwd, loginService.getById(passwd))
+		const checkpasswd = bcrypt.compare(passwd, loginService.getById(passwd));
 
-		if(!checkpasswd){
-			return res.status(401).json({msg: "senha inválida!"})
+		if (!checkpasswd) {
+			return res.status(401).json({ msg: 'senha inválida!' });
 		}
 
-		try{
+		try {
+			const secret = process.env.SECRET || 'ffkngdçflghdçfohidsgnaoi';
 
-			const secret = process.env.SECRET
-
-			const tokenuser = jwt.sign({
+			const tokenuser = jwt.sign(
+				{
 					id: loginService.getById,
-				},	
-				secret,
-			)
-			res.status(200).json({msg: "autenticação realizada com sucesso", tokenuser})
+				},
+				secret
+			);
 
-
-		}catch(error){
-			console.log(error)
-			res.status(500).json({msg: "houve um erro no servidor"})
+			console.log({ tokenuser });
+			res.status(200).json({ msg: 'autenticação realizada com sucesso', tokenuser });
+		} catch (error) {
+			console.log(error);
+			res.status(500).json({ msg: 'houve um erro no servidor' });
 		}
 
-		function checktoken (req, res, next){
-			const authHeader = req.headers['authorization']
-			const token = authHeader && authHeader.split(" ")[1]
+		function checktoken(req, res, next) {
+			const authHeader = req.headers['authorization'];
+			const token = authHeader && authHeader.split(' ')[1];
 
-			if(!token){
-				return res.status(401).json({msg: "Acesso negado"})
+			if (!token) {
+				return res.status(401).json({ msg: 'Acesso negado' });
 			}
-			try{
-				const secret = process.env.SECRET
-				jwt.verify(token, secret)
+			try {
+				const secret = process.env.SECRET || 'ffkngdçflghdçfohidsgnaoi';
+				jwt.verify(token, secret);
 
-				next()
-
-			}catch(error){
-				res.status(400).json({msg: "token invalido"})
-
+				next();
+			} catch (error) {
+				res.status(400).json({ msg: 'token invalido' });
 			}
 		}
-
-
 
 		/*
 		var token = req.headers['x-access-token'];
@@ -93,7 +86,6 @@ class Auth {
 			});
 		}*/
 	}
-
 }
 
 export default new Auth();
