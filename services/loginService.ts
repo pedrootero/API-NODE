@@ -14,7 +14,7 @@ class LoginService {
 	}
 
 	findOne(_id) {
-		return LoginSchema.findOne({ _id });
+		return LoginSchema.findOne(_id);
 	}
 	post(login) {
 		return LoginSchema.create(login);

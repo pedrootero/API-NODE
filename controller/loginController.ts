@@ -37,7 +37,7 @@ class LoginController {
 		}
 
 		//check user exists
-		const userExists = LoginService.findOne({ user: user });
+		const userExists = await LoginService.findOne({ user: user });
 		console.log({ userExists });
 
 		if (userExists) {
