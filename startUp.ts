@@ -48,10 +48,11 @@ class StartUp {
 		});
 
 		this.app.route('/auth/login').get(LoginController.get);
+		this.app.route('/auth/validalogin').post(LoginController.post);
 		this.app.route('/auth/register').post(LoginController.post);
 		this.app.route('/auth/buscalogin').get(LoginController.getById);
 
-		this.app.use(Auth.validate);
+		//this.app.use(Auth.validate);
 
 		this.app.route('/api/v1/news').get(NewsController.get);
 		this.app.route('/api/v1/news/:id').get(NewsController.getById);

@@ -5,7 +5,7 @@ import * as bcrypt from 'bcrypt';
 import loginService from '../services/loginService';
 
 class LoginController {
-	get(req, res) {
+	async get(req, res) {
 		//console.log('>>>>>>>>>> ' + JSON.stringify(res));
 		LoginService.get()
 			.then((login) => {
@@ -37,7 +37,7 @@ class LoginController {
 		}
 
 		//check user exists
-		const userExists = LoginService.getById({ user: user });
+		const userExists = LoginService.findOne({ user: user });
 		console.log({ userExists });
 
 		if (userExists) {
@@ -49,7 +49,7 @@ class LoginController {
 		const salt: String = await bcrypt.genSalt(12);
 		console.log({ salt });
 
-		const passwordHash = await bcrypt.hash(`${passwd}`, salt);
+		const passwordHash: String = await bcrypt.hash(`${passwd}`, salt);
 
 		console.log({ passwordHash });
 

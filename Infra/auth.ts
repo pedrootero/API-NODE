@@ -24,7 +24,7 @@ class Auth {
 			return res.status(404).json({ msg: 'Usuario não encontrado' });
 		}
 		//check passwd match
-		const checkpasswd = await bcrypt.compare(`${passwd}`, loginService.getById(passwd));
+		const checkpasswd: String = await bcrypt.compare(`${passwd}`, loginService.getById(passwd));
 
 		if (!checkpasswd) {
 			return res.status(401).json({ msg: 'senha inválida!' });
@@ -33,7 +33,7 @@ class Auth {
 		try {
 			const secret = process.env.SECRET || 'ffkngdçflghdçfohidsgnaoi';
 
-			const tokenuser = jwt.sign(
+			const tokenuser = await jwt.sign(
 				{
 					id: loginService.getById,
 				},
