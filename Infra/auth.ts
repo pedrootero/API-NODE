@@ -1,14 +1,14 @@
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
-import loginController from '../controller/loginController';
 import loginRepository from '../repository/loginRepository';
 import loginService from '../services/loginService';
 import Configs from './configs';
+import exp = require('constants');
 
 class Auth {
 	async validate(req, res, next) {
 		const { user, passwd } = req.body;
-
+		console.log('entrou aqui ', user);
 		//validations
 		if (!user) {
 			return res.status(422).json({ msg: 'o nome é obrigatório' });
@@ -18,14 +18,16 @@ class Auth {
 		}
 
 		//check user exists
-		const login = loginService.getById({ user: user });
+		const login = await loginService.findOne({ user: user });
+		console.log('entrou login');
+		console.log(login);
 
 		if (!login) {
 			return res.status(404).json({ msg: 'Usuario não encontrado' });
 		}
 		//check passwd match
-		const checkpasswd: String = await bcrypt.compare(`${passwd}`, loginService.getById(passwd));
-
+		const checkpasswd: String = await bcrypt.compare(`${passwd}`, login.passwd);
+		console.log('entrou checkpasswd');
 		if (!checkpasswd) {
 			return res.status(401).json({ msg: 'senha inválida!' });
 		}
@@ -35,7 +37,7 @@ class Auth {
 
 			const tokenuser = await jwt.sign(
 				{
-					id: loginService.getById,
+					id: login,
 				},
 				secret
 			);
@@ -43,51 +45,30 @@ class Auth {
 			console.log({ tokenuser });
 
 			res.status(200).json({ msg: 'autenticação realizada com sucesso', tokenuser });
+			//next();
 		} catch (error) {
 			console.log(error);
 			res.status(500).json({ msg: 'houve um erro no servidor' });
 		}
+	}
 
-		async function checktoken(req, res, next) {
-			const authHeader = req.headers['authorization'];
-			const token = (await authHeader) && authHeader.split(' ')[1];
+	async checktoken(req, res, next) {
+		const authHeader = req.headers['authorization'];
+		const token = (await authHeader) && authHeader.split(' ')[1];
+		console.log({ token });
+
+		if (!token) {
+			return res.status(401).json({ msg: 'Acesso negado' });
+		}
+		try {
+			const secret = process.env.SECRET || 'ffkngdçflghdçfohidsgnaoi';
+			jwt.verify(token, secret);
 			console.log({ token });
 
-			if (!token) {
-				return res.status(401).json({ msg: 'Acesso negado' });
-			}
-			try {
-				const secret = process.env.SECRET || 'ffkngdçflghdçfohidsgnaoi';
-				jwt.verify(token, secret);
-				console.log({ token });
-
-				next();
-			} catch (error) {
-				res.status(400).json({ msg: 'token invalido' });
-			}
+			next();
+		} catch (error) {
+			res.status(403).json({ msg: 'token invalido' });
 		}
-
-		/*
-		var token = req.headers['x-access-token'];
-
-		if (token) {
-			jwt.verify(token, Configs.secret, function (err, decoded) {
-				//jwt.verify(token, tokenlogin, function (err, decoded) {
-				if (err) {
-					return res.status(403).send({
-						success: false,
-						message: '403 - Token Inválido',
-					});
-				} else {
-					next();
-				}
-			});
-		} else {
-			return res.status(401).send({
-				success: false,
-				message: '401 - unauthorized',
-			});
-		}*/
 	}
 }
 

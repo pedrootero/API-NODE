@@ -10,7 +10,7 @@ class LoginService {
 	}
 
 	getById(_id) {
-		return LoginSchema.findById({ _id });
+		return LoginSchema.findById(_id);
 	}
 
 	findOne(_id) {
