@@ -13,8 +13,8 @@ class LoginService {
 		return LoginSchema.findById(_id);
 	}
 
-	findOne(_id) {
-		return LoginSchema.findOne(_id);
+	findOne(_user) {
+		return LoginSchema.findOne(_user);
 	}
 	post(login) {
 		return LoginSchema.create(login);

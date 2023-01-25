@@ -52,6 +52,8 @@ class StartUp {
 		this.app.route('/auth/validalogin').post(Auth.validate);
 		this.app.route('/auth/register').post(LoginController.post);
 		this.app.route('/auth/buscalogin').get(LoginController.getById);
+		this.app.use('/exports', express.static(process.cwd() + '/exports'));
+		this.app.route('/api/v1/news/export/tocsv').get(NewsController.exportToCsv);
 
 		this.app.use(Auth.checktoken);
 
